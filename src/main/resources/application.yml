@@ -1,0 +1,13 @@
+server:
+  port: 8181
+
+spring:
+  application:
+    name: solace-events
+
+solace:
+  host: localhost:55554
+  vpn: default
+  username: admin
+  password: admin
+

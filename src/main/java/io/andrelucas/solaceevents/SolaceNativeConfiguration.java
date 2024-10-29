@@ -1,12 +1,6 @@
 package io.andrelucas.solaceevents;
 
-import com.solacesystems.jcsmp.JCSMPException;
-import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
-import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.SessionEventArgs;
-import com.solacesystems.jcsmp.SessionEventHandler;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,18 +28,9 @@ public class SolaceNativeConfiguration {
     properties.setProperty(JCSMPProperties.USERNAME, username);
     properties.setProperty(JCSMPProperties.PASSWORD, password);
     properties.setProperty(JCSMPProperties.VPN_NAME, vpn);
+    properties.setProperty(JCSMPProperties.REAPPLY_SUBSCRIPTIONS, true);
 
     return properties;
   }
 
-
-  @Bean
-  public JCSMPSession session(@Qualifier("properties") JCSMPProperties properties) throws JCSMPException {
-    var session = JCSMPFactory.onlyInstance().createSession(properties, null,
-        sessionEventArgs -> System.out.println("Session event: " + sessionEventArgs.getEvent()));
-
-    session.connect();
-
-    return session;
-  }
 }

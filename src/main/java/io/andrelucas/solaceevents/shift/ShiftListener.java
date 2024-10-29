@@ -1,4 +1,4 @@
-package io.andrelucas.solaceevents.tutorial;
+package io.andrelucas.solaceevents.shift;
 
 import com.solacesystems.jcsmp.BytesMessage;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -10,13 +10,12 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TutorialListener implements XMLMessageListener {
-  private static final Logger logger = Logger.getLogger(TutorialListener.class.getName());
-
+public class ShiftListener implements XMLMessageListener {
+  private static final Logger logger = Logger.getLogger(ShiftListener.class.getName());
 
   @Override
   public void onReceive(BytesXMLMessage bytesXMLMessage) {
-    logger.info("TutorialListener.onReceive");
+    logger.info("ShiftListener.onReceive");
 
     if (bytesXMLMessage instanceof TextMessage) {
       logger.info("TextMessage received: " + ((TextMessage) bytesXMLMessage).getText());
@@ -25,10 +24,12 @@ public class TutorialListener implements XMLMessageListener {
       ((BytesMessage) bytesXMLMessage).readAttachmentBytes(bytes);
       logger.info("BytesMessage received: " + new String(bytes, StandardCharsets.UTF_8));
     }
+
   }
 
   @Override
   public void onException(JCSMPException e) {
-
+    System.out.println("ShiftListener.onException");
+    System.out.println(e.getMessage());
   }
 }

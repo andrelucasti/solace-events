@@ -5,6 +5,13 @@ spring:
   application:
     name: solace-events
 
+  data:
+    mongodb:
+      auto-index-creation: true
+      uuid-representation: standard
+      uri: mongodb://solace-events:solace-events@localhost:27017
+      database: solace-events
+
 solace:
   host: localhost:55554
   vpn: default

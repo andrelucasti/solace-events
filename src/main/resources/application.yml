@@ -15,6 +15,5 @@ spring:
 solace:
   host: localhost:55554
   vpn: default
-  username: admin
-  password: admin
-
+  username: default
+  password: default

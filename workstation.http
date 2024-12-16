@@ -1,0 +1,9 @@
+### Create a Workstation
+POST http://localhost:8181/workstation
+Content-Type: application/json
+
+{
+  "name":"Workstation novas",
+  "latitude":32.1,
+  "longitude":91.0
+}

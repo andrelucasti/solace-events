@@ -54,7 +54,8 @@ class CreateWorkstationTest {
 
     subject.execute(input);
 
-    verify(workStationEventPublisher).publish(workerStationEventArgumentCaptor.capture(), eq("workstation/created"));
+    verify(workStationEventPublisher).publish(workerStationEventArgumentCaptor.capture(), eq("workstation/created")
+    );
     final var workStationEvent = workerStationEventArgumentCaptor.getValue();
 
     Assertions.assertThat(workStationEvent.entityId()).isEqualTo(workStationEvent.workstation().id());

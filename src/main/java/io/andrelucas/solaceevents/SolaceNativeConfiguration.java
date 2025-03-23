@@ -1,11 +1,16 @@
 package io.andrelucas.solaceevents;
 
 import com.solace.messaging.MessagingService;
+import com.solace.messaging.config.MissingResourcesCreationConfiguration.MissingResourcesCreationStrategy;
 import com.solace.messaging.config.SolaceProperties.AuthenticationProperties;
 import com.solace.messaging.config.SolaceProperties.ServiceProperties;
 import com.solace.messaging.config.SolaceProperties.TransportLayerProperties;
 import com.solace.messaging.config.profile.ConfigurationProfile;
 import com.solace.messaging.publisher.PersistentMessagePublisher;
+import com.solace.messaging.receiver.MessageReceiver.MessageHandler;
+import com.solace.messaging.receiver.PersistentMessageReceiver;
+import com.solace.messaging.resources.Queue;
+import com.solace.messaging.resources.TopicSubscription;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,6 +80,22 @@ public class SolaceNativeConfiguration {
 
     return persistentMessagePublisher;
 
+  }
+
+  @Bean
+  public PersistentMessageReceiver persistentMessageReceiver(@Qualifier("messagingService") final MessagingService messagingService,
+      @Qualifier("workstationShiftCreatedHandler") final MessageHandler handler) {
+    final var queue = Queue.durableNonExclusiveQueue("test_shift_queue");
+    final var persistentMessageReceiver = messagingService.createPersistentMessageReceiverBuilder()
+        .withMissingResourcesCreationStrategy(MissingResourcesCreationStrategy.CREATE_ON_START)
+        .withSubscriptions(TopicSubscription.of("workstation/created"))
+        .fromProperties(nativeProperties())
+        .build(queue);
+
+    persistentMessageReceiver.startAsync();
+    persistentMessageReceiver.receiveAsync(handler);
+
+    return persistentMessageReceiver;
   }
 
   private Properties nativeProperties() {

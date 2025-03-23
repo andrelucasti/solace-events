@@ -16,6 +16,7 @@ public class CreateWorkstation {
     this.workstationEventCarriedPublisher = workstationEventCarriedPublisher;
   }
 
+
   public void execute(final Input input) {
     try {
       final var location = new Geolocation(input.latitude(), input.longitude());

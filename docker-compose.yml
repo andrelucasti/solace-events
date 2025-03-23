@@ -50,7 +50,7 @@ services:
     image: solace/solace-pubsub-standard:latest
     volumes:
       - "storage-group:/var/lib/solace"
-    shm_size: 1g
+    shm_size: 2g
     ulimits:
       core: -1
       nofile:
